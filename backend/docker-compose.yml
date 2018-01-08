@@ -1,0 +1,39 @@
+version: '3.3'
+
+
+services:
+    mongo:
+        image: mongo:latest
+        restart: always
+        networks:
+            - mongo
+        volumes:
+            - ./data:/data/db
+    
+    python:
+        build: main
+        restart: always
+        volumes:
+            - ./final:/usr/src/app
+        networks:
+            - mongo
+            - nginx
+        ports:
+            - "8883:8883"
+
+    nginx:
+        depends_on:
+            - python
+        build: nginx
+        restart: always
+        volumes:
+            - ./nginx_log:/var/log/nginx
+        networks:
+            - nginx
+        ports:
+            - "80:80"
+            - "443:443"
+
+networks:
+    mongo:
+    nginx:

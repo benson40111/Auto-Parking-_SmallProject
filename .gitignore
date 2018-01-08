@@ -1,1 +1,5 @@
-node_modules
+.*un~
+__pycache__
+*.pyc
+ENV
+venv
